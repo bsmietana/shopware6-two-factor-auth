@@ -6,17 +6,9 @@ namespace RuneLaenen\TwoFactorAuth\Event;
 
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 
-class StorefrontTwoFactorCancelEvent
+readonly class StorefrontTwoFactorCancelEvent
 {
-    /**
-     * @var SalesChannelContext
-     */
-    private $salesChannelContext;
-
-    public function __construct(SalesChannelContext $salesChannelContext)
-    {
-        $this->salesChannelContext = $salesChannelContext;
-    }
+    public function __construct(private SalesChannelContext $salesChannelContext) {}
 
     public function getSalesChannelContext(): SalesChannelContext
     {

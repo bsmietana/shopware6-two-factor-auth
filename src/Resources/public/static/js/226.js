@@ -1,0 +1,2 @@
+"use strict";(window["webpackJsonpPluginrune-laenen-two-factor-auth"]=window["webpackJsonpPluginrune-laenen-two-factor-auth"]||[]).push([[226],{226:function(n,e,r){r.r(e),r.d(e,{default:function(){return t}});var t={template:'{% block sw_setting_user_detail_card_integrations %}\r\n    <rl-user-otp :user="user" :isLoading="isLoading" :onSave="onSave"></rl-user-otp>\r\n    {% parent %}\r\n{% endblock %}\r\n'}}}]);
+//# sourceMappingURL=226.js.map

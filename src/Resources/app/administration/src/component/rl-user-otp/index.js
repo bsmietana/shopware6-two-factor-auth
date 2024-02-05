@@ -1,13 +1,11 @@
 import template from './rl-user-otp.html.twig';
 import './rl-user-otp.scss';
 
-const {Component} = Shopware;
-
 /**
  * @component-example
  * <rl-user-otp :user="user" :isLoading="isLoading" :onSave="onSave"></rl-user-otp>
  */
-Component.register('rl-user-otp', {
+export default {
     template,
 
     props: {
@@ -89,4 +87,4 @@ Component.register('rl-user-otp', {
             this.onSave();
         },
     },
-});
+};

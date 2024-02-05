@@ -1,24 +1,20 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace RuneLaenen\TwoFactorAuth\Service;
 
 use Shopware\Core\System\SystemConfig\SystemConfigService;
 
-class ConfigurationService
+readonly class ConfigurationService
 {
-    public const CONFIGURATION_KEY = 'RuneLaenenTwoFactorAuth';
+    public const string CONFIGURATION_KEY = 'RuneLaenenTwoFactorAuth';
 
-    public function __construct(
-        private SystemConfigService $systemConfig
-    ) {
-    }
+    public function __construct(private SystemConfigService $systemConfig) {}
 
-    public function get(string $key, ?string $salesChannelId = null)
+    public function get(string $key, ?string $salesChannelId = null): mixed
     {
-        return $this->systemConfig->get(
-            self::CONFIGURATION_KEY . '.config.' . $key,
-            $salesChannelId
-        );
+        return $this->systemConfig->get(self::CONFIGURATION_KEY . '.config.' . $key, $salesChannelId);
     }
 
     public function getAdministrationCompany(?string $salesChannelId = null): string

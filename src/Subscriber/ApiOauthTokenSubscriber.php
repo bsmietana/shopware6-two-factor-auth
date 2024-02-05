@@ -6,9 +6,9 @@ namespace RuneLaenen\TwoFactorAuth\Subscriber;
 
 use League\OAuth2\Server\Exception\OAuthServerException;
 use RuneLaenen\TwoFactorAuth\Service\TimebasedOneTimePasswordServiceInterface;
+use Shopware\Core\Framework\Api\Context\SystemSource;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\System\User\UserEntity;
@@ -16,15 +16,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class ApiOauthTokenSubscriber implements EventSubscriberInterface
+readonly class ApiOauthTokenSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private EntityRepository $userRepository,
-        private TimebasedOneTimePasswordServiceInterface $oneTimePasswordService
-    ) {
-    }
+        private TimebasedOneTimePasswordServiceInterface $totpService,
+    ) {}
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::RESPONSE => 'onResponse',
@@ -46,10 +45,11 @@ class ApiOauthTokenSubscriber implements EventSubscriberInterface
 
         $user = $this->userRepository->search(
             (new Criteria())->addFilter(new EqualsFilter('username', $username)),
-            Context::createDefaultContext()
+            new Context(new SystemSource())
         )->first();
 
-        if (!$user instanceof UserEntity
+        if (
+            !$user instanceof UserEntity
             || !$user->getCustomFields()
             || empty($user->getCustomFields()['rl_2fa_secret'])
         ) {
@@ -72,7 +72,7 @@ class ApiOauthTokenSubscriber implements EventSubscriberInterface
     private function checkOtp($secret, $code): bool
     {
         try {
-            if (!$this->oneTimePasswordService->verifyCode($secret, $code)) {
+            if (!$this->totpService->verifyCode($secret, $code)) {
                 throw new \Exception();
             }
         } catch (\Exception $exception) {

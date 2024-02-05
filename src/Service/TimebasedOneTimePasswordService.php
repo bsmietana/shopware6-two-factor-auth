@@ -8,10 +8,7 @@ use PragmaRX\Google2FA\Google2FA;
 
 class TimebasedOneTimePasswordService implements TimebasedOneTimePasswordServiceInterface
 {
-    /**
-     * @var Google2FA
-     */
-    private $google2fa;
+    private Google2FA $google2fa;
 
     public function __construct()
     {

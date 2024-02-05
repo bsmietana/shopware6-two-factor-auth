@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace RuneLaenen\TwoFactorAuth\Subscriber;
 
-use RuneLaenen\TwoFactorAuth\Controller\StorefrontTwoFactorAuthController;
 use RuneLaenen\TwoFactorAuth\Event\StorefrontTwoFactorAuthEvent;
 use RuneLaenen\TwoFactorAuth\Event\StorefrontTwoFactorCancelEvent;
 use Shopware\Core\Checkout\Customer\Event\CustomerLoginEvent;
@@ -12,22 +11,17 @@ use Shopware\Core\SalesChannelRequest;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 
-class CustomerLoginSubscriber implements EventSubscriberInterface
+readonly class CustomerLoginSubscriber implements EventSubscriberInterface
 {
-    public const SESSION_NAME = 'RL_2FA_NEED_VERIFICATION';
+    public const string SESSION_NAME = 'RL_2FA_NEED_VERIFICATION';
 
-    public function __construct(
-        private RequestStack $requestStack,
-        private RouterInterface $router
-    ) {
-    }
+    public function __construct(private RequestStack $requestStack, private RouterInterface $router) {}
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             CustomerLoginEvent::class => 'onCustomerLoginEvent',

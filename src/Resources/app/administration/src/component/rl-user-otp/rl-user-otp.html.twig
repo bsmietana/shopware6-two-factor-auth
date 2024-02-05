@@ -10,7 +10,7 @@
                       :closable="false">
                 {{ $tc('rl-2fa.settings.user-detail.enabled.description') }}
 
-                <template v-slot:actions>
+                <template #actions>
                     <sw-button @click="disable2FA">{{ $tc('rl-2fa.settings.user-detail.enabled.disable') }}</sw-button>
                 </template>
             </sw-alert>
@@ -23,7 +23,7 @@
                       :closable="false">
                 {{ $tc('rl-2fa.settings.user-detail.not-enabled.description') }}
 
-                <template v-slot:actions>
+                <template #actions>
                     <sw-button @click="generateSecret">{{ $tc('rl-2fa.settings.user-detail.not-enabled.get-started') }}</sw-button>
                 </template>
             </sw-alert>
@@ -48,7 +48,7 @@
 
                     <sw-text-field label="One-time Password"
                                    :isInvalid="oneTimePasswordError.length > 0"
-                                   v-model="oneTimePassword"
+                                   v-model:value="oneTimePassword"
                                    autocomplete="one-time-code"></sw-text-field>
 
                     <sw-button @click="validateAndSaveOneTimePassword">
